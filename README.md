@@ -47,3 +47,7 @@ This project relies on an external library for SDFs (Signed Distance Fields) tha
 	`-Djava.library.path=./libs/natives/windows`
 
 [14] Done!
+
+## Notes ##
+Special thanks to Gabriel Ambrosio for the excellent video series on game development in Java (YouTube channel GamesWithGabe).
+This project would not have been possible without it.
