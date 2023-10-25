@@ -12,6 +12,7 @@ public class CharInfo {
     private int sourceY;
     private int width;
     private int height;
+    private int descent;
     private Vector2f textureCoords[] = new Vector2f[4];
 
 
@@ -23,12 +24,14 @@ public class CharInfo {
      * @param sourceY
      * @param width
      * @param height
+     * @param descent
      */
-    public CharInfo(int sourceX, int sourceY, int width, int height) {
+    public CharInfo(int sourceX, int sourceY, int width, int height, int descent) {
         this.sourceX = sourceX;
         this.sourceY = sourceY;
         this.width = width;
         this.height = height;
+        this.descent = descent;
     }
 
 
@@ -44,7 +47,7 @@ public class CharInfo {
         float x0 = (float)sourceX / (float)fontWidth;
         float x1 = (float)(sourceX + width) / (float)fontWidth;
         float y0 = (float)(sourceY - height) / (float)fontHeight;
-        float y1 = (float)sourceY / (float)fontHeight;
+        float y1 = ((float)sourceY / (float)fontHeight) + ((float)descent / (float)fontHeight);
 
         textureCoords[0] = new Vector2f(x0, y1);
         textureCoords[1] = new Vector2f(x1, y0);
@@ -66,6 +69,10 @@ public class CharInfo {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getDescent() {
+        return descent;
     }
 
     public Vector2f[] getTextureCoords() {

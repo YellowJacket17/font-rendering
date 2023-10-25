@@ -49,7 +49,7 @@ public class Window {
 
     public void run() {
 
-        Sdf.generateCodepointBitmap('A', "src/main/resources/fonts/Arimo-mO92.ttf", 32);
+//        Sdf.generateCodepointBitmap('A', "src/main/resources/fonts/Arimo-mO92.ttf", 32);
 
         Shader fontShader = new Shader("/shaders/fontShader.glsl");
         fontShader.compileAndLink();
@@ -66,7 +66,7 @@ public class Window {
             glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(1, 1, 1, 1);
 
-            batch.addString("Hello, World!", 0, 0, 0.5f, 0xAA01BB);
+            batch.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
             batch.flushBatch();                                                                                         // Must flush at the end of the frame to actually fill up batch.
 
             glfwSwapBuffers(window);

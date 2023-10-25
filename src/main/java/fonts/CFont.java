@@ -65,7 +65,7 @@ public class CFont {
         // Loop through all glyphs and calculate what actual image dimensions must be.
         for (int i = 0; i < font.getNumGlyphs(); i++) {
             if (font.canDisplay(i)) {
-                CharInfo charInfo = new CharInfo(x, y, fontMetrics.charWidth(i), fontMetrics.getHeight());
+                CharInfo charInfo = new CharInfo(x, y, fontMetrics.charWidth(i), fontMetrics.getHeight(), fontMetrics.getDescent());
                 charMap.put(i, charInfo);
                 width = Math.max(x + fontMetrics.charWidth(i), width);                                                  // Take whichever width is bigger.
                 x += charInfo.getWidth();
@@ -137,7 +137,7 @@ public class CFont {
                 buffer.put(alphaComponent);
             }
         }
-        buffer.flip();  // TODO : Necessary?
+        buffer.flip();
 
         // Upload to GPU.
         textureId = glGenTextures();
@@ -159,7 +159,7 @@ public class CFont {
      */
     public CharInfo getCharacter(int codepoint) {
 
-        return charMap.getOrDefault(codepoint, new CharInfo(0, 0, 0, 0));
+        return charMap.getOrDefault(codepoint, new CharInfo(0, 0, 0, 0, 0));
     }
 
 

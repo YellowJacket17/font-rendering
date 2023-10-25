@@ -189,7 +189,7 @@ public class FontBatch {
         float x0 = x;                                                                                                   // Top-left corner (remember that positive Y is down).
         float y0 = y;                                                                                                   // ^^^
         float x1 = x + (scale * charInfo.getWidth());                                                                   // Bottom-right corner (remember that positive Y is down).
-        float y1 = y + (scale * charInfo.getHeight());                                                                  // ^^^
+        float y1 = y + (scale * (charInfo.getHeight() + charInfo.getDescent()));                                        // ^^^ (also, modifying this value affects how "stretched" the text appears)
 
         float ux0 = charInfo.getTextureCoords()[0].x;
         float uy0 = charInfo.getTextureCoords()[1].y;                                                                   // Flipped with `uy1` since positive Y is defined as down here.
