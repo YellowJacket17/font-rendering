@@ -7,7 +7,7 @@
 
 **Dependency management:** Apache Maven
 
-**Overview:** This project is a test application for font rendering.
+**Overview:** This project is a test application for font rendering with OpenGL via LWJGL (Lightweight Java Game Library).
 
 ## FreeType
 This project relies on an external library for SDFs (Signed Distance Fields) that is not managed by Maven.
