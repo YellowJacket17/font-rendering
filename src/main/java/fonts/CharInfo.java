@@ -3,28 +3,54 @@ package fonts;
 import org.joml.Vector2f;
 
 /**
- * This class represents data for a single font character (positioning, etc.)
+ * This class represents data for a single font character (size, texture coordinates, etc.).
  */
 public class CharInfo {
 
     // FIELDS
-    private int sourceX;
-    private int sourceY;
-    private int width;
-    private int height;
-    private int descent;
-    private Vector2f textureCoords[] = new Vector2f[4];
+    /**
+     * Raw character coordinate on original rendered parent font image.
+     * This is NOT a texture coordinate and is only used to calculate texture coordinates.
+     * Note that the parent image form which these raw coordinates are taken from has its origin set in the top-left
+     * corner; all raw coordinates are in respect to that.
+     */
+    private final int sourceX, sourceY;
+
+    /**
+     * Character width.
+     */
+    private final int width;
+
+    /**
+     * Character height.
+     * Note that this will be the same for all characters within a given font.
+     */
+    private final int height;
+
+    /**
+     * Character descent (i.e., amount character extends below baseline).
+     * Note that this will be the same for all characters within a given font.
+     */
+    private final int descent;
+
+    /**
+     * Coordinates of this character on the parent font texture.
+     * Note that texture coordinates are normalized from zero to one, where (0, 0) is the bottom-left corner of the
+     * texture and (1, 1) is the top-right corner.
+     *
+     */
+    private final Vector2f textureCoords[] = new Vector2f[4];
 
 
     // CONSTRUCTOR
     /**
      * Constructs a CharInfo instance.
      *
-     * @param sourceX
-     * @param sourceY
-     * @param width
-     * @param height
-     * @param descent
+     * @param sourceX raw character coordinate on original rendered parent font image
+     * @param sourceY raw character coordinate on original rendered parent font image
+     * @param width character width
+     * @param height character height
+     * @param descent character descent
      */
     public CharInfo(int sourceX, int sourceY, int width, int height, int descent) {
         this.sourceX = sourceX;
@@ -37,17 +63,17 @@ public class CharInfo {
 
     // METHOD
     /**
-     * Calculates the texture coordinate of this character on the parent texture.
+     * Calculates the texture coordinate of this character on the parent font texture.
      *
-     * @param fontWidth
-     * @param fontHeight
+     * @param fontWidth width of parent texture containing font
+     * @param fontHeight height of parent texture containing font
      */
     public void calculateTextureCoordinates(int fontWidth, int fontHeight) {
 
-        float x0 = (float)sourceX / (float)fontWidth;
-        float x1 = (float)(sourceX + width) / (float)fontWidth;
-        float y0 = (float)(sourceY - height) / (float)fontHeight;
-        float y1 = ((float)sourceY / (float)fontHeight) + ((float)descent / (float)fontHeight);
+        float x0 = (float)sourceX / (float)fontWidth;                                                                   // Convert `sourceX` to a 0-1 range.
+        float x1 = (float)(sourceX + width) / (float)fontWidth;                                                         // Convert `sourceX + width` to a 0-1 range.
+        float y0 = (float)(sourceY - height) / (float)fontHeight;                                                       // Convert `sourceY - height` to a 0-1 range.
+        float y1 = ((float)sourceY / (float)fontHeight) + ((float)descent / (float)fontHeight);                         // Convert `sourceY + descent` to a 0-1 range.
 
         textureCoords[0] = new Vector2f(x0, y1);
         textureCoords[1] = new Vector2f(x1, y0);

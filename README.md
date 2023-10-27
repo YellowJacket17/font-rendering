@@ -49,5 +49,8 @@ This project relies on an external library for SDFs (Signed Distance Fields) tha
 [14] Done!
 
 ## Notes ##
+Only Windows is supported.
+Additional dependencies must be added for additional operating systems.
+
 Special thanks to Gabriel Ambrosio for the excellent video series on game development in Java (YouTube channel GamesWithGabe).
 This project would not have been possible without it.

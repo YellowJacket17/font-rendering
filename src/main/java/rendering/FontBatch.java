@@ -15,17 +15,7 @@ import static org.lwjgl.opengl.GL31.GL_TEXTURE_BUFFER;
  * This class holds a batch of CFont instances to be sent to the GPU and rendered in a single call.
  */
 public class FontBatch {
-
-    // TEMPORARY FIELD
-//    private float[] vertices = {
-//            // x, y,        r, g, b              ux, uy
-//            0.5f, 0.5f,     1.0f, 0.2f, 0.11f,    1.0f, 0.0f,
-//            0.5f, -0.5f,    1.0f, 0.2f, 0.11f,    1.0f, 1.0f,
-//            -0.5f, -0.5f,   1.0f, 0.2f, 0.11f,    0.0f, 1.0f,
-//            -0.5f, 0.5f,    1.0f, 0.2f, 0.11f,    0.0f, 0.0f
-//    };
-
-
+    
     // FIELDS
     /**
      * Base vertex indices.
@@ -83,6 +73,9 @@ public class FontBatch {
 
 
     // CONSTRUCTOR
+    /**
+     * Constructs a FontBatch instance.
+     */
     public FontBatch() {}
 
 

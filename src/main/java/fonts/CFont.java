@@ -13,16 +13,45 @@ import java.util.HashMap;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * This class represents a font.
+ * This class represents a loaded font.
  */
 public class CFont {
 
     // FIELDS
+    /**
+     * Font file path.
+     */
     private final String filePath;
+
+    /**
+     * Font scale (controls font resolution).
+     */
     private final int fontSize;
-    private int width, height, lineHeight;
+
+    /**
+     * Width of rendered image containing all characters.
+     */
+    private int width;
+
+    /**
+     * Height of rendered image containing all characters.
+     */
+    private int height;
+
+    /**
+     * Map to store information on all characters contained in this font.
+     */
     private HashMap<Integer, CharInfo> charMap = new HashMap<>();
+
+    /**
+     * Texture ID of rendered parent texture containing this font.
+     */
     private int textureId;
+
+    /**
+     * Height adjustment for all loaded characters.
+     */
+    private final float heightAdjustment = 1.0f;
 
 
     // CONSTRUCTOR
@@ -41,7 +70,7 @@ public class CFont {
 
     // METHODS
     /**
-     * Generates a bitmap for this font.
+     * Generates a bitmap for this font and uploads the result to the GPU.
      */
     public void generateBitmap() {
 
@@ -58,25 +87,25 @@ public class CFont {
         int estimatedWidth = (int)Math.sqrt(font.getNumGlyphs()) * font.getSize() + 1;
         width = 0;
         height = fontMetrics.getHeight();
-        lineHeight = fontMetrics.getHeight();
         int x = 0;
-        int y = (int)(fontMetrics.getHeight() * 1.4f);
+        int y = (int)(fontMetrics.getHeight() * heightAdjustment);
 
         // Loop through all glyphs and calculate what actual image dimensions must be.
         for (int i = 0; i < font.getNumGlyphs(); i++) {
             if (font.canDisplay(i)) {
-                CharInfo charInfo = new CharInfo(x, y, fontMetrics.charWidth(i), fontMetrics.getHeight(), fontMetrics.getDescent());
+                CharInfo charInfo = new CharInfo(x, y,
+                        fontMetrics.charWidth(i), fontMetrics.getHeight(), fontMetrics.getDescent());
                 charMap.put(i, charInfo);
                 width = Math.max(x + fontMetrics.charWidth(i), width);                                                  // Take whichever width is bigger.
                 x += charInfo.getWidth();
                 if (x > estimatedWidth) {
                     x = 0;
-                    y += fontMetrics.getHeight() + 1.4f;
-                    height += fontMetrics.getHeight() * 1.4f;
+                    y += fontMetrics.getHeight() + heightAdjustment;
+                    height += fontMetrics.getHeight() * heightAdjustment;
                 }
             }
         }
-        height += fontMetrics.getHeight() * 1.4f;
+        height += fontMetrics.getHeight() * heightAdjustment;
 
         // Dispose of graphics context of fake image since no longer needed.
         g2d.dispose();
@@ -105,7 +134,7 @@ public class CFont {
 //            File file = new File("temp.png");
 //            ImageIO.write(image, "png", file);
 //        } catch (IOException e) {
-//            // TODO : Handle this exception differently.
+//            System.out.println("Failed to save font image.");
 //            e.printStackTrace();
 //        }
 
@@ -115,7 +144,7 @@ public class CFont {
 
 
     /**
-     * Uploads a texture of the passed image to the GPU.
+     * Uploads the passed image to the GPU as a texture.
      *
      * @param image target image
      */
@@ -139,7 +168,7 @@ public class CFont {
         }
         buffer.flip();
 
-        // Upload to GPU.
+        // Upload image to GPU.
         textureId = glGenTextures();
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -152,7 +181,7 @@ public class CFont {
 
 
     /**
-     * Retrieves a target character from this font.
+     * Retrieves a character from this font.
      *
      * @param codepoint character to retrieve (!, A, B, C, etc.)
      * @return character

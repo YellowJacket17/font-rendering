@@ -10,14 +10,27 @@ import static org.lwjgl.opengl.GL11C.glClear;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+/**
+ * Core class that houses the main loop and initializes the application.
+ */
 public class Window {
 
     // FIELDS
+    /**
+     * Memory address of GLFW window in memory space.
+     */
     private long window;
+
+    /**
+     * Loaded font.
+     */
     private CFont font;
 
 
     // CONSTRUCTOR
+    /**
+     * Constructs a Window instance.
+     */
     public Window() {
         init();
         font = new CFont("/fonts/Arimo-mO92.ttf", 128);
@@ -25,28 +38,33 @@ public class Window {
 
 
     // METHODS
+    /**
+     * Initializes the GLFW window.
+     */
     private void init() {
+
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
         window = glfwCreateWindow(1280, 720, "Font Rendering", NULL, NULL);
+
         if (window == NULL) {
-            System.out.println("Could not create window.");
+
+            System.out.println("Failed to create GLFW window.");
             glfwTerminate();
             return;
         }
-
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
         glfwShowWindow(window);
-
-        // Initialize gl functions for windows using GLAD
-        GL.createCapabilities();
+        GL.createCapabilities();                                                                                        // Initialize gl functions for windows using GLAD.
     }
 
 
+    /**
+     * Starts the main application loop.
+     */
     public void run() {
 
 //        Sdf.generateCodepointBitmap('A', "src/main/resources/fonts/Arimo-mO92.ttf", 32);
@@ -67,7 +85,7 @@ public class Window {
             glClearColor(1, 1, 1, 1);
 
             batch.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
-            batch.flushBatch();                                                                                         // Must flush at the end of the frame to actually fill up batch.
+            batch.flushBatch();                                                                                         // Must flush at the end of the frame to actually render entire batch.
 
             glfwSwapBuffers(window);
             glfwPollEvents();
