@@ -3,14 +3,12 @@ package rendering;
 import fonts.CFont;
 import fonts.CharInfo;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-import static org.lwjgl.opengl.GL31.GL_TEXTURE_BUFFER;
 
 /**
  * This class holds a batch of CFont instances to be sent to the GPU and rendered in a single call.
@@ -246,7 +244,7 @@ public class FontBatch {
         // Draw buffer that was just uploaded.
         shader.use();
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_BUFFER, font.getTextureId());
+        glBindTexture(GL_TEXTURE_2D, font.getTextureId());
         shader.uploadTexture("uFontTexture", 0);
         shader.uploadMat4f("uProjection", projection);
         glBindVertexArray(vaoId);
@@ -258,7 +256,7 @@ public class FontBatch {
         // Unbind after drawing.
         glBindVertexArray(0);
         shader.detach();
-        glBindTexture(GL_TEXTURE_BUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 

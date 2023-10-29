@@ -24,7 +24,7 @@ public class Window {
     /**
      * Loaded font.
      */
-    private CFont font, font2;
+    private CFont font1, font2;
 
 
     // CONSTRUCTOR
@@ -33,9 +33,9 @@ public class Window {
      */
     public Window() {
         init();
-        font = new CFont("/fonts/Arimo-mO92.ttf", 128);
+        font1 = new CFont("/fonts/Arimo-mO92.ttf", 128);
         font2 = new CFont("/fonts/ArimoBold-dVDx.ttf", 128);
-//        font = new CFont("/fonts/TrulyMadlyDpad-a72o.ttf", 128);
+//        font2 = new CFont("/fonts/TrulyMadlyDpad-a72o.ttf", 128);
     }
 
 
@@ -74,10 +74,10 @@ public class Window {
         Shader fontShader = new Shader("/shaders/fontShader.glsl");
         fontShader.compileAndLink();
 
-        FontBatch batch = new FontBatch();
-        batch.setShader(fontShader);
-        batch.setFont(font);
-        batch.init();
+        FontBatch batch1 = new FontBatch();
+        batch1.setShader(fontShader);
+        batch1.setFont(font1);
+        batch1.init();
 
         FontBatch batch2 = new FontBatch();
         batch2.setShader(fontShader);
@@ -92,8 +92,8 @@ public class Window {
             glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(1, 1, 1, 1);
 
-            batch.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
-            batch.flush();                                                                                              // Must flush at the end of the frame to actually render entire batch.
+            batch1.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
+            batch1.flush();                                                                                             // Must flush at the end of the frame to actually render entire batch.
 
             batch2.addString("Hello, World! g p", 0, 60, 0.5f, 0xAAAAA);
             batch2.flush();
