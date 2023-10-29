@@ -24,7 +24,7 @@ public class Window {
     /**
      * Loaded font.
      */
-    private CFont font;
+    private CFont font, font2;
 
 
     // CONSTRUCTOR
@@ -34,6 +34,8 @@ public class Window {
     public Window() {
         init();
         font = new CFont("/fonts/Arimo-mO92.ttf", 128);
+//        font = new CFont("/fonts/ArimoBold-dVDx.ttf", 128);
+//        font = new CFont("/fonts/TrulyMadlyDpad-a72o.ttf", 128);
     }
 
 
@@ -71,6 +73,7 @@ public class Window {
 
         Shader fontShader = new Shader("/shaders/fontShader.glsl");
         fontShader.compileAndLink();
+
         FontBatch batch = new FontBatch();
         batch.setShader(fontShader);
         batch.setFont(font);
@@ -85,7 +88,8 @@ public class Window {
             glClearColor(1, 1, 1, 1);
 
             batch.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
-            batch.flushBatch();                                                                                         // Must flush at the end of the frame to actually render entire batch.
+            batch.addString("Hello, World! g p", 0, 60, 0.5f, 0xAAAAA);
+            batch.flush();                                                                                              // Must flush at the end of the frame to actually render entire batch.
 
             glfwSwapBuffers(window);
             glfwPollEvents();

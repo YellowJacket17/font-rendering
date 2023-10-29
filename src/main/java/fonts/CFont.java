@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
@@ -50,8 +51,9 @@ public class CFont {
 
     /**
      * Height adjustment for all loaded characters.
+     * This amount is trimmed off the top of the characters.
      */
-    private final float heightAdjustment = 1.0f;
+    private final int heightAdjustment = 50;
 
 
     // CONSTRUCTOR
@@ -75,7 +77,8 @@ public class CFont {
     public void generateBitmap() {
 
         // Create new font from loaded file.
-        Font font = new Font(this.filePath, Font.PLAIN, fontSize);
+        Font font = registerFont();
+        font = new Font(font.getName(), Font.PLAIN, fontSize);
 
         // Create fake image to get font information.
         BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -88,24 +91,24 @@ public class CFont {
         width = 0;
         height = fontMetrics.getHeight();
         int x = 0;
-        int y = (int)(fontMetrics.getHeight() * heightAdjustment);
+        int y = fontMetrics.getHeight();
 
         // Loop through all glyphs and calculate what actual image dimensions must be.
         for (int i = 0; i < font.getNumGlyphs(); i++) {
             if (font.canDisplay(i)) {
                 CharInfo charInfo = new CharInfo(x, y,
-                        fontMetrics.charWidth(i), fontMetrics.getHeight(), fontMetrics.getDescent());
+                        fontMetrics.charWidth(i), fontMetrics.getHeight() - heightAdjustment, fontMetrics.getDescent());
                 charMap.put(i, charInfo);
                 width = Math.max(x + fontMetrics.charWidth(i), width);                                                  // Take whichever width is bigger.
                 x += charInfo.getWidth();
                 if (x > estimatedWidth) {
                     x = 0;
-                    y += fontMetrics.getHeight() + heightAdjustment;
-                    height += fontMetrics.getHeight() * heightAdjustment;
+                    y += fontMetrics.getHeight();
+                    height += fontMetrics.getHeight();
                 }
             }
         }
-        height += fontMetrics.getHeight() * heightAdjustment;
+        height += fontMetrics.getHeight();
 
         // Dispose of graphics context of fake image since no longer needed.
         g2d.dispose();
@@ -131,7 +134,7 @@ public class CFont {
 
         // Create image in file system.
 //        try {
-//            File file = new File("temp.png");
+//            File file = new File(font.getName() + ".png");
 //            ImageIO.write(image, "png", file);
 //        } catch (IOException e) {
 //            System.out.println("Failed to save font image.");
@@ -172,8 +175,8 @@ public class CFont {
         textureId = glGenTextures();
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.getWidth(), image.getHeight(),
                 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
         buffer.clear();                                                                                                 // Clear allocated memory for buffer.
@@ -189,6 +192,29 @@ public class CFont {
     public CharInfo getCharacter(int codepoint) {
 
         return charMap.getOrDefault(codepoint, new CharInfo(0, 0, 0, 0, 0));
+    }
+
+
+    /**
+     * Loads and registers this font to be used by Java.
+     *
+     * @return font
+     */
+    private Font registerFont() {
+
+        try (InputStream is = getClass().getResourceAsStream(filePath)) {
+
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+            ge.registerFont(font);
+            return font;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            // TODO : Throw exception here.
+        }
+        return null;
     }
 
 

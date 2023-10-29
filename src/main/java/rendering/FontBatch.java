@@ -169,11 +169,11 @@ public class FontBatch {
      * @param charInfo character data
      * @param rgb color in hexadecimal format
      */
-    public void addCharacter(float x, float y, float scale, CharInfo charInfo, int rgb) {
+    private void addCharacter(float x, float y, float scale, CharInfo charInfo, int rgb) {
 
         if (size >= (batchSize - 4)) {
 
-            flushBatch();                                                                                               // Flush batch (i.e., render then clear) to start fresh.
+            flush();                                                                                                    // Flush batch (i.e., render then clear) to start fresh.
         }
         float r = (float)(((rgb >> 16) & 0xFF) / 255.0);                                                                // Extract red information from hexadecimal.
         float g = (float)(((rgb >> 8) & 0xFF) / 255.0);                                                                 // Extract green information from hexadecimal.
@@ -207,7 +207,7 @@ public class FontBatch {
         vertices[index + 5] = ux1;
         vertices[index + 6] = uy1;
 
-        index += 7;                                                                                                      // Third vertex with position, color, and texture coordinates.
+        index += 7;                                                                                                     // Third vertex with position, color, and texture coordinates.
         vertices[index] = x0;
         vertices[index + 1] = y1;
         vertices[index + 2] = r;
@@ -230,10 +230,10 @@ public class FontBatch {
 
 
     /**
-     * Flushes a batch.
+     * Flushes this batch.
      * This must be called to actually render text to the screen.
      */
-    public void flushBatch() {
+    public void flush() {
 
         // Clear buffer on GPU.
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
@@ -244,7 +244,7 @@ public class FontBatch {
 
         // Draw buffer that was just uploaded.
         shader.use();
-        glActiveTexture(GL_TEXTURE);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_BUFFER, font.getTextureId());
         shader.uploadTexture("uFontTexture", 0);
         shader.uploadMat4f("uProjection", projection);
@@ -253,6 +253,11 @@ public class FontBatch {
 
         // Reset batch for use on next call.
         size = 0;
+
+        // Unbind after drawing.
+        glBindVertexArray(0);
+        shader.detach();
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 
