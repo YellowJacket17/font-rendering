@@ -3,6 +3,7 @@ package rendering;
 import fonts.CFont;
 import fonts.CharInfo;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
@@ -126,8 +127,8 @@ public class FontBatch {
 
             elementBuffer[i] = indices[(i % 6)] + ((i / 6) * 4);                                                        // Use pattern set by indices array.
         }
-        int ebo = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);                                                                     // Bind array.
+        int eboId = glGenBuffers();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);                                                                   // Bind array.
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);                                           // Buffer array to GPU.
     }
 
@@ -249,7 +250,7 @@ public class FontBatch {
         shader.uploadTexture("uFontTexture", 0);
         shader.uploadMat4f("uProjection", projection);
         glBindVertexArray(vaoId);
-        glDrawElements(GL_TRIANGLES, size * 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, (size * 6), GL_UNSIGNED_INT, 0);
 
         // Reset batch for use on next call.
         size = 0;
@@ -257,7 +258,7 @@ public class FontBatch {
         // Unbind after drawing.
         glBindVertexArray(0);
         shader.detach();
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_BUFFER, 0);
     }
 
 

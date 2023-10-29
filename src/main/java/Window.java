@@ -34,7 +34,7 @@ public class Window {
     public Window() {
         init();
         font = new CFont("/fonts/Arimo-mO92.ttf", 128);
-//        font = new CFont("/fonts/ArimoBold-dVDx.ttf", 128);
+        font2 = new CFont("/fonts/ArimoBold-dVDx.ttf", 128);
 //        font = new CFont("/fonts/TrulyMadlyDpad-a72o.ttf", 128);
     }
 
@@ -79,6 +79,11 @@ public class Window {
         batch.setFont(font);
         batch.init();
 
+        FontBatch batch2 = new FontBatch();
+        batch2.setShader(fontShader);
+        batch2.setFont(font2);
+        batch2.init();
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -88,8 +93,10 @@ public class Window {
             glClearColor(1, 1, 1, 1);
 
             batch.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
-            batch.addString("Hello, World! g p", 0, 60, 0.5f, 0xAAAAA);
             batch.flush();                                                                                              // Must flush at the end of the frame to actually render entire batch.
+
+            batch2.addString("Hello, World! g p", 0, 60, 0.5f, 0xAAAAA);
+            batch2.flush();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
