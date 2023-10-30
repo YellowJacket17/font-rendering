@@ -30,6 +30,11 @@ public class CFont {
     private final int fontSize;
 
     /**
+     * Font name.
+     */
+    private String name;
+
+    /**
      * Width of rendered image containing all characters.
      */
     private int width;
@@ -79,6 +84,7 @@ public class CFont {
         // Create new font from loaded file.
         Font font = registerFont();
         font = new Font(font.getName(), Font.PLAIN, fontSize);
+        name = font.getName();
 
         // Create fake image to get font information.
         BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -219,7 +225,11 @@ public class CFont {
     }
 
 
-    // GETTER
+    // GETTERS
+    public String getName() {
+        return name;
+    }
+
     public int getTextureId() {
         return textureId;
     }
