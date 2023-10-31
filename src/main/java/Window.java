@@ -92,10 +92,10 @@ public class Window {
             glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(1, 1, 1, 1);
 
-            batch1.addString("Hello, World! g p", 0, 0, 0.5f, 0xAA01BB);
+            batch1.addString("Hello, World! g p y", 0, 0, 0.5f, 0xAA01BB);
             batch1.flush();                                                                                             // Must flush at the end of the frame to actually render entire batch.
 
-            batch2.addString("Hello, World! g p", 0, 60, 0.5f, 0xAAAAA);
+            batch2.addString("Hello, yorld! g p", 0, 60, 0.5f, 0xAAAAA);
             batch2.flush();
 
             glfwSwapBuffers(window);

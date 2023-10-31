@@ -9,7 +9,7 @@ public class CharInfo {
 
     // FIELDS
     /**
-     * Raw character coordinate on original rendered parent font image.
+     * Raw character coordinate on original generated parent font image.
      * This is NOT a texture coordinate and is only used to calculate texture coordinates.
      * Note that the parent image form which these raw coordinates are taken from has its origin set in the top-left
      * corner; all raw coordinates are in respect to that.
