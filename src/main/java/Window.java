@@ -34,8 +34,8 @@ public class Window {
     public Window() {
         init();
         font1 = new CFont("/fonts/Arimo-mO92.ttf", 128);
-        font2 = new CFont("/fonts/ArimoBold-dVDx.ttf", 128);
-//        font2 = new CFont("/fonts/TrulyMadlyDpad-a72o.ttf", 128);
+//        font2 = new CFont("/fonts/ArimoBold-dVDx.ttf", 128);
+        font2 = new CFont("/fonts/TrulyMadlyDpad-a72o.ttf", 128);
     }
 
 

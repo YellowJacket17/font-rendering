@@ -63,7 +63,7 @@ public class CFont {
 
     /**
      * Spacing adjustment for space between all characters drawn onto the generated parent font image.
-     * This amount is added to the spacing between characters in this image.
+     * This amount is added to the spacing between each character in this image.
      * Increased spacing helps to prevent bleed-over from neighboring characters when rendering a target character.
      */
     private final int spacingAdjustment = 50;
